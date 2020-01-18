@@ -31,3 +31,6 @@ class Vector():
 	# Again - radians!
 	def set_angle(self, angle):
 		self.rotate(angle - self.get_angle())
+
+	def affect_gravity(self, factor):
+		self.y -= factor
