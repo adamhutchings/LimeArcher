@@ -1,7 +1,9 @@
 # For vectors, movement-blocking, etc.
 
+# For calculations
 from math import sin, cos, atan, pi
 
+# A vector represents a direction of movement
 class Vector():
 
 	def __init__(self, x, y):
@@ -32,8 +34,8 @@ class Vector():
 	def set_angle(self, angle):
 		self.rotate(angle - self.get_angle())
 
-	def affect_gravity(self, factor):
-		self.y -= factor
+	def affect_gravity(self, factor, framerate):
+		self.y -= factor/framerate
 
 	def bounce_x(self, factor):
 		self.x *= -factor
