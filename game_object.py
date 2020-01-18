@@ -48,3 +48,7 @@ class GameObject():
 	def tick(self):
 		self._up(self.vec[0])
 		self._right(self.vec[1])
+
+	def collided(self, other):
+		return (( abs(self.t.xcor() - other.t.xcor()) > (self.w+other.w)*10) and
+			    (abs(self.t.ycor() - other.t.ycor()) > (self.h+other.h)*10))
