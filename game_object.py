@@ -1,6 +1,7 @@
 # For game objects LMAO
 
 import turtle
+from movement_tools import Vector
 
 class GameObject():
 
@@ -15,6 +16,8 @@ class GameObject():
 
 		self.h = height
 		self.w = width
+
+		self.vec = Vector(0, 0)
 
 	# Basic movement
 	def _up(self, amount):
@@ -40,3 +43,8 @@ class GameObject():
 		wn.onkeypress(self.down, binds[1])
 		wn.onkeypress(self.left, binds[2])
 		wn.onkeypress(self.right, binds[3])
+
+	# For 'moving one tick'
+	def tick(self):
+		self._up(self.vec[0])
+		self._right(self.vec[1])
