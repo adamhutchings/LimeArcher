@@ -1,6 +1,6 @@
 # For vectors, movement-blocking, etc.
 
-from math import sin, cos
+from math import sin, cos, atan, pi
 
 class Vector():
 
@@ -13,6 +13,21 @@ class Vector():
 		self.y *= -1
 
 	# Rotate stuff
+	# rotate the vector in radians!
 	def rotate(self, factor):
 		newX = self.x*cos(factor) - self.y*sin(factor)
 		newY = self.x*sin(factor) + self.y*cos(factor)
+
+		self.x = newX
+		self.y = newY
+
+	def get_angle(self):
+
+		try:
+			return atan(self.y/self.x)
+		except ZeroDivisionError:
+			return pi/2
+
+	# Again - radians!
+	def set_angle(self, angle):
+		self.rotate(angle - self.get_angle())
