@@ -34,3 +34,9 @@ class Vector():
 
 	def affect_gravity(self, factor):
 		self.y -= factor
+
+	def bounce_x(self, factor):
+		self.x *= -factor
+
+	def bounce_y(self, factor):
+		self.y *= -factor
