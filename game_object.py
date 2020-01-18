@@ -3,6 +3,9 @@
 import turtle
 from movement_tools import Vector
 
+# All objects
+objs = []
+
 class GameObject():
 
 	def __init__(self, shape, color, width, height, x, y):
@@ -16,8 +19,11 @@ class GameObject():
 
 		self.h = height
 		self.w = width
+		self.gravity = True
 
 		self.vec = Vector(0, 0)
+
+		objs.append(self)
 
 	# Basic movement
 	def _up(self, amount):
@@ -29,6 +35,7 @@ class GameObject():
 	def _right(self, amount):
 		self.t.setx(self.t.xcor() + amount)
 
+	# TODO: change up and down to be more specific
 	def up(self):
 		self._up(20)
 	def down(self):
@@ -46,9 +53,35 @@ class GameObject():
 
 	# For 'moving one tick'
 	def tick(self):
-		self._up(self.vec[0])
-		self._right(self.vec[1])
+		self._up(self.vec.y)
+		self._right(self.vec.x)
 
 	def collided(self, other):
-		return (( abs(self.t.xcor() - other.t.xcor()) > (self.w+other.w)*10) and
-			    (abs(self.t.ycor() - other.t.ycor()) > (self.h+other.h)*10))
+		if abs(self.t.xcor() - other.t.xcor()) > (self.w + other.w)*10:
+			return False
+		if abs(self.t.ycor() - other.t.ycor()) > (self.h + other.h)*10:
+			return False
+
+		return True
+
+# BELOW: Subclasses of GameObject
+
+# Obstacles
+
+class Obstacle(GameObject):
+
+	def __init__(self, scale, direction, color, x, y):
+		if direction == 'x':
+			super().__init__('square', color, scale, 1, x, y)
+		elif direction == 'y':
+			super().__init__('square', color, 1, scale, x, y)
+		else:
+			raise ValueError("Sorry, direction can only be x or y but was {} instead. ".format(direction))
+
+		self.gravity = False
+
+	def check_for_collisions(self):
+		for obj in objs:
+			if obj != self:
+				if self.collided(obj):
+					obj.vec.bounce_y(0.6)
