@@ -37,7 +37,7 @@ class GameObject():
 
 	# TODO: change up and down to be more specific
 	def up(self):
-		self._up(20)
+		self.vec.y = 4
 	def down(self):
 		self._down(20)
 	def left(self):
@@ -66,7 +66,7 @@ class GameObject():
 
 # BELOW: Subclasses of GameObject
 
-# Obstacles
+# Obstacles for collision and whatnot
 
 class Obstacle(GameObject):
 
@@ -84,4 +84,5 @@ class Obstacle(GameObject):
 		for obj in objs:
 			if obj != self:
 				if self.collided(obj):
+					obj._down(obj.vec.y)
 					obj.vec.bounce_y(0.6)
