@@ -30,31 +30,60 @@ player2.binds(wn, ['Up', 'Down', 'Left', 'Right'])
 player1.lives = 3
 player2.lives = 3
 
-# The floor
-floor = Obstacle(10, 'x', '#FFFFFF', 0, -250)
+# The floors
+leftFloor   =  Obstacle(10, 'x', '#FFFFFF', -350, -250)
+middleFloor =  Obstacle(10, 'x', '#FFFFFF', 0   , -250)
+rightFloor  =  Obstacle(10, 'x', '#FFFFFF', 350 , -250)
 
-try:
+# Huge ass loop
+def main_game():
+
 	while True:
 
 		# Updating everything
 		wn.update()
 
-		# Gravity
+		# Updating objects
 		for obj in objs:
 			obj.tick()
 
+			# Gravity
 			if obj.gravity:
-				obj.vec.affect_gravity(2, FRAMERATE)
+				obj.vec.affect_gravity(4, FRAMERATE)
 
+			# Collisions with obstacles
 			if isinstance(obj, Obstacle):
 				obj.check_for_collisions()
 
-			for player in [player1, player2]:
-				if player.t.ycor() < -400:
-					player.lives -= 1
+			# Wraparound
+			if obj.t.xcor() > 500:
+				obj._left(1000)
+			elif obj.t.xcor() < -500:
+				obj._right(1000)
+
+		# Death checks
+		for player in [player1, player2]:
+			if player.t.ycor() < -400:
+				player.lives -= 1
+
+				# Resetting motion and position
+				player.t.sety(300)
+
+				if player == player1:
+					player.t.setx(-200)
+				elif player == player2:
+					player.t.setx(200)
+				else:
+					raise Exception("Uhhh... how did this happen?")
+
+				player.vec.x = 0
+				player.vec.y = 0
 
 		# One complete iteration
 		sleep(1/FRAMERATE)
+
+try:
+	main_game()
 
 except (Terminator, TclError):
 	pass;
