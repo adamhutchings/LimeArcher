@@ -1,6 +1,8 @@
 # For game objects LMAO
 
 import turtle
+from random import choice
+
 from movement_tools import Vector
 
 # All objects
@@ -76,7 +78,7 @@ class Obstacle(GameObject):
 		elif direction == 'y':
 			super().__init__('square', color, 1, scale, x, y)
 		else:
-			raise ValueError("Sorry, direction can only be x or y but was {} instead. ".format(direction))
+			raise ValueError(f"Sorry, direction can only be x or y but was {direction} instead.")
 
 		self.gravity = False
 
@@ -85,4 +87,52 @@ class Obstacle(GameObject):
 			if obj != self:
 				if self.collided(obj):
 					obj._down(obj.vec.y)
+
+					# Bounces back with -0.6 velocity
 					obj.vec.bounce_y(0.6)
+
+class Projectile(GameObject):
+
+	def __init__(self, direction, parent):
+		super().__init__('circle', '#000000', 0.3, 0.3, parent.t.xcor(), parent.t.ycor())
+
+		self.parent = parent
+
+	def destroy(self):
+		del self.t
+
+	def check_coll(self, playersList):
+		for obj in objs:
+			if self.collided(obj):
+
+				# Three cases - player, other projectile, or obstacle
+				
+				if obj in playersList:
+					if obj != self.parent:
+						obj.lives -= 1
+
+					self.destroy()
+
+				elif isinstance(obj, Obstacle):
+
+					# Replacing the obstacle
+					# But it can't collide with a player!
+					while True:
+						obj.goto(choice(range(-400, 450, 50)), choice(-300, 300, 50))
+
+						c = False
+						for player in playersList:
+							if player.collided(obj):
+								c = True
+
+						if not c:
+							break;
+
+					self.destroy()
+
+				elif isinstance(obj, Projectile):
+
+					obj.vec.bounce_x()
+					obj.vec.bounce_y()
+					self.vec.bounce_x()
+					self.vec.bounce_y()
