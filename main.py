@@ -60,7 +60,7 @@ def death(player):
     for obj in objs:
         obj.t.hideturtle()
 
-    show(f"Oh no! {player} died!", 0, 0)
+    show(f"Oh no! {player} shot theself!", 0, 0)
 
     sleep(2)
     bye()
