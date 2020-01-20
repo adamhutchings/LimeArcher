@@ -53,13 +53,14 @@ class GameObject():
             if isinstance(obj, Obstacle):
 
                 # x-cor checking
-                avgWid = (self.w + obj.w)/2
+                avgWid = (self.w + obj.w)*10
                 if abs(obj.t.xcor() - self.t.xcor()) < avgWid:
 
                     # y-cor checking
+                    avgHeight = (self.h + obj.h)*10
                     yDiff = self.t.ycor() - obj.t.ycor()
-                    if yDiff < 100 and yDiff > 0:
-                        self.t.sety(obj.t.ycor()+((self.h + obj.h)*10))
+                    if 100 > yDiff > avgHeight:
+                        self.t.sety(obj.t.ycor()+(avgHeight))
 
                         # Setting velocity to 0
                         self.vec.y = 0
