@@ -41,6 +41,54 @@ class GameObject:
     def right_(self, amount):
         self.t.setx(self.t.xcor() + amount)
 
+    # General sideways movement
+    def _side(self, side):
+
+        if side == 'left':
+            bound1 = 100
+        elif side == 'right':
+            bound1 = -100
+        else:
+            raise ValueError(f"Sorry, unrecognized direction {side} instead of left or right")
+
+        # Going though every obstacle
+        # to see if it's in range
+        for obj in objs:
+            if isinstance(obj, Obstacle):
+
+                avg_wid = (self.w + obj.w) * 10
+
+                # Vars
+                if side == 'left':
+                    bound2 = avg_wid
+                else:
+                    bound2 = -avg_wid
+
+                # x-cor checking
+                avg_height = (self.h + obj.h) * 10
+                if abs(obj.t.ycor() - self.t.ycor()) < avg_height:
+
+                    # y-cor checking
+                    x_diff = self.t.xcor() - obj.t.xcor()
+
+                    if side == 'left':
+                        condition = bound1 < x_diff < bound2
+                    else:
+                        condition = bound1 > x_diff > bound2
+
+                    if condition:
+                        self.t.setx(obj.t.xcor() + bound2)
+
+                        # Setting velocity to 0
+                        self.vec.bounce_x(0.5)
+
+                        # Breaking the function loop
+                        return None
+
+        # If nothing has happened
+        self.t.setx(self.t.xcor() - bound1)
+        self.vec.bounce_x(0.5)
+
     # Actual player movements
     def up(self):
         self.vec.y = 4
