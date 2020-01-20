@@ -37,19 +37,23 @@ class GameObject():
 	def _right(self, amount):
 		self.t.setx(self.t.xcor() + amount)
 
-	# TODO: change up and down to be more specific
+	# Actual player movements
 	def up(self):
 		self.vec.y = 4
-	def down(self):
-		self._down(20)
 	def left(self):
 		self._left(20)
 	def right(self):
 		self._right(20)
 
-	def binds(self, wn, binds):
+	def down(self, testObject):
+
+		# Possibly change later?
+		# Distance down is 50
+		testObject.go_down(self, 50)
+
+	def binds(self, wn, binds, testObject):
 		wn.onkeypress(self.up, binds[0])
-		wn.onkeypress(self.down, binds[1])
+		wn.onkeypress(self.down(testObject), binds[1])
 		wn.onkeypress(self.left, binds[2])
 		wn.onkeypress(self.right, binds[3])
 
@@ -82,6 +86,7 @@ class Obstacle(GameObject):
 
 		self.gravity = False
 
+
 	def check_for_collisions(self):
 		for obj in objs:
 			if obj != self:
@@ -90,6 +95,7 @@ class Obstacle(GameObject):
 
 					# Bounces back with -0.6 velocity
 					obj.vec.bounce_y(0.6)
+
 
 class Projectile(GameObject):
 
@@ -136,3 +142,40 @@ class Projectile(GameObject):
 					obj.vec.bounce_y()
 					self.vec.bounce_x()
 					self.vec.bounce_y()
+
+
+# For checking  collisions
+class TestObject(GameObject):
+
+	def __init__(self):
+		super().__init__('square', '#000000', 1, 1, 0, 0)
+		self.t.hideturtle()
+		self.gravity = False
+
+	def go_down(self, player, distance):
+
+		# Does the player-movement-down checking
+
+		# Going to where the player is
+		self.t.goto(player.t.xcor(), player.t.ycor())
+
+		# Moves in a line
+		for x in range(distance):
+			self._down(1)
+
+			# Checking if collided with any obstacles
+			for obj in objs:
+				if isinstance(obj, Obstacle):
+					if obj.collided(self):
+
+						# Moving to the last uncollided position
+						player.t.goto(self.t.xcor(), self.t.ycor()+1)
+
+						# Resetting
+						self.t.goto(0, 0)
+
+						# Ending method execution
+					return None
+
+		# In case no objects were found
+		player._down(distance)
