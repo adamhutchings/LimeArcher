@@ -1,7 +1,7 @@
 from turtle import Screen, Turtle, bye, Terminator
 from _tkinter import TclError
 
-from game_object import GameObject, objs, Obstacle
+from game_object import GameObject, objs, Obstacle, TestObject
 
 from time import sleep
 
@@ -21,13 +21,16 @@ wn.listen()
 # Goodbye to the game
 wn.onkeypress(bye, 'Escape')
 
+# Testing objects
+testObject1 = TestObject()
+testObject2 = TestObject()
 
 # Players
 player1 = GameObject('circle', '#880000', 1, 1, -200, 0)
-player1.binds(wn, ['w', 's', 'a', 'd'])
+player1.binds(wn, ['w', 's', 'a', 'd'], testObject1)
 
 player2 = GameObject('square', '#008800', 1, 1, 200, 0)
-player2.binds(wn, ['Up', 'Down', 'Left', 'Right'])
+player2.binds(wn, ['Up', 'Down', 'Left', 'Right'], testObject2)
 
 
 # Their lives
