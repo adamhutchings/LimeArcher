@@ -69,14 +69,14 @@ class GameObject:
                         self.t.sety(obj.t.ycor()+avg_height)
 
                         # Setting velocity to 0
-                        self.vec.y = 0
+                        self.vec.bounce_y(0.5)
 
                         # Breaking the function loop
                         return None
 
         # If nothing has happened
         self.t.sety(self.t.ycor()-50)
-        self.vec.y = 0
+        self.vec.bounce_y(0.5)
 
     def binds(self, wn, binds):
         wn.onkeypress(self.up, binds[0])
