@@ -4,7 +4,8 @@
 from math import sin, cos, atan, pi
 
 # A vector represents a direction of movement
-class Vector():
+class Vector:
+
 
     def __init__(self, x, y):
         self.x = x
@@ -17,11 +18,11 @@ class Vector():
     # Rotate stuff
     # rotate the vector in radians!
     def rotate(self, factor):
-        newX = self.x*cos(factor) - self.y*sin(factor)
-        newY = self.x*sin(factor) + self.y*cos(factor)
+        new_x = self.x*cos(factor) - self.y*sin(factor)
+        new_y = self.x*sin(factor) + self.y*cos(factor)
 
-        self.x = newX
-        self.y = newY
+        self.x = new_x
+        self.y = new_y
 
     def get_angle(self):
 

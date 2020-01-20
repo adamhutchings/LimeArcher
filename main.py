@@ -35,9 +35,16 @@ player2.lives = 3
 
 
 # The floors
-leftFloor   =  Obstacle(10, 'x', '#FFFFFF', -350, -250)
-middleFloor =  Obstacle(10, 'x', '#FFFFFF', 0   , -250)
-rightFloor  =  Obstacle(10, 'x', '#FFFFFF', 350 , -250)
+leftFloor = Obstacle(10, 'x', '#FFFFFF', -350, -250)
+middleFloor = Obstacle(10, 'x', '#FFFFFF', 0, -250)
+rightFloor = Obstacle(10, 'x', '#FFFFFF', 350, -250)
+
+# Walls in the middle
+leftWall = Obstacle(10, 'y', '#FF2806', -270, 150)
+leftMidWall = Obstacle(10, 'y', '#FF2806', -135, -50)
+midWall = Obstacle(10, 'y', '#FF2806', 0, 150)
+rightMidWall = Obstacle(10, 'y', '#FF2806', 135, -50)
+rightWall = Obstacle(10, 'y', '#FF2806', 270, 150)
 
 
 # The pen for writing things
