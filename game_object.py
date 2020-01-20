@@ -8,7 +8,8 @@ from movement_tools import Vector
 # All objects
 objs = []
 
-class GameObject():
+
+class GameObject:
 
     def __init__(self, shape, color, width, height, x, y):
         self.t = turtle.Turtle()
@@ -16,7 +17,7 @@ class GameObject():
         self.t.penup()
         self.t.color(color)
         self.t.shape(shape)
-        self.t.shapesize(stretch_len = width, stretch_wid = height)
+        self.t.shapesize(stretch_len=width, stretch_wid=height)
         self.t.goto(x, y)
 
         self.h = height
@@ -28,20 +29,25 @@ class GameObject():
         objs.append(self)
 
     # Basic movement
-    def _up(self, amount):
+    def up_(self, amount):
         self.t.sety(self.t.ycor() + amount)
-    def _down(self, amount):
+
+    def down_(self, amount):
         self.t.sety(self.t.ycor() - amount)
+
     def _left(self, amount):
         self.t.setx(self.t.xcor() - amount)
+
     def _right(self, amount):
         self.t.setx(self.t.xcor() + amount)
 
     # Actual player movements
     def up(self):
         self.vec.y = 4
+
     def left(self):
         self._left(20)
+
     def right(self):
         self._right(20)
 
@@ -53,14 +59,14 @@ class GameObject():
             if isinstance(obj, Obstacle):
 
                 # x-cor checking
-                avgWid = (self.w + obj.w)*10
-                if abs(obj.t.xcor() - self.t.xcor()) < avgWid:
+                avg_wid = (self.w + obj.w)*10
+                if abs(obj.t.xcor() - self.t.xcor()) < avg_wid:
 
                     # y-cor checking
-                    avgHeight = (self.h + obj.h)*10
-                    yDiff = self.t.ycor() - obj.t.ycor()
-                    if 100 > yDiff > avgHeight:
-                        self.t.sety(obj.t.ycor()+(avgHeight))
+                    avg_height = (self.h + obj.h)*10
+                    y_diff = self.t.ycor() - obj.t.ycor()
+                    if 100 > y_diff > avg_height:
+                        self.t.sety(obj.t.ycor()+avg_height)
 
                         # Setting velocity to 0
                         self.vec.y = 0
@@ -80,7 +86,7 @@ class GameObject():
 
     # For 'moving one tick'
     def tick(self):
-        self._up(self.vec.y)
+        self.up_(self.vec.y)
         self._right(self.vec.x)
 
     def collided(self, other):
@@ -95,6 +101,7 @@ class GameObject():
 
 # Obstacles for collision and whatnot
 
+
 class Obstacle(GameObject):
 
     def __init__(self, scale, direction, color, x, y):
@@ -107,12 +114,11 @@ class Obstacle(GameObject):
 
         self.gravity = False
 
-
     def check_for_collisions(self):
         for obj in objs:
             if obj != self:
                 if self.collided(obj):
-                    obj._down(obj.vec.y)
+                    obj.down_(obj.vec.y)
 
                     # Bounces back with -0.6 velocity
                     obj.vec.bounce_y(0.6)
@@ -120,7 +126,7 @@ class Obstacle(GameObject):
 
 class Projectile(GameObject):
 
-    def __init__(self, direction, parent):
+    def __init__(self, parent):
         super().__init__('circle', '#000000', 0.3, 0.3, parent.t.xcor(), parent.t.ycor())
 
         self.parent = parent
@@ -128,13 +134,13 @@ class Projectile(GameObject):
     def destroy(self):
         del self.t
 
-    def check_coll(self, playersList):
+    def check_coll(self, players_list):
         for obj in objs:
             if self.collided(obj):
 
                 # Three cases - player, other projectile, or obstacle
 
-                if obj in playersList:
+                if obj in players_list:
                     if obj != self.parent:
                         obj.lives -= 1
 
@@ -145,21 +151,21 @@ class Projectile(GameObject):
                     # Replacing the obstacle
                     # But it can't collide with a player!
                     while True:
-                        obj.goto(choice(range(-400, 450, 50)), choice(-300, 300, 50))
+                        obj.t.goto(choice(range(-400, 450, 50)), choice(-300, 300, 50))
 
                         c = False
-                        for player in playersList:
+                        for player in players_list:
                             if player.collided(obj):
                                 c = True
 
                         if not c:
-                            break;
+                            break
 
                     self.destroy()
 
                 elif isinstance(obj, Projectile):
 
-                    obj.vec.bounce_x()
-                    obj.vec.bounce_y()
-                    self.vec.bounce_x()
-                    self.vec.bounce_y()
+                    obj.vec.bounce_x(1)
+                    obj.vec.bounce_y(1)
+                    self.vec.bounce_x(1)
+                    self.vec.bounce_y(1)

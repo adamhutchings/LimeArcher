@@ -1,4 +1,4 @@
-from turtle import Screen, Turtle, bye, Terminator
+from turtle import Screen, Turtle, Terminator
 from _tkinter import TclError
 
 from game_object import GameObject, objs, Obstacle
@@ -12,14 +12,14 @@ FRAMERATE = 30
 
 # Window
 wn = Screen()
-wn.setup(height = 800, width = 1000)
+wn.setup(height=800, width=1000)
 wn.title('Stupid game shit')
 wn.bgcolor('#220022')
 wn.tracer(0)
 wn.listen()
 
 # Goodbye to the game
-wn.onkeypress(bye, 'Escape')
+wn.onkeypress(wn.bye, 'Escape')
 
 # Players
 player1 = GameObject('circle', '#880000', 1, 1, -200, 0)
@@ -51,7 +51,7 @@ pen.color('#88FF00')
 def show(text, x, y):
     pen.clear()
     pen.goto(x, y)
-    pen.write(text, align = 'center', font = ('Times', 18, 'bold'))
+    pen.write(text, align='center', font=('Times', 18, 'bold'))
 
 
 # For, you know, dying
@@ -63,7 +63,7 @@ def death(player):
     show(f"Oh no! {player} died!", 0, 0)
 
     sleep(2)
-    bye()
+    wn.bye()
 
 
 # Huge ass loop
@@ -88,9 +88,9 @@ def main_game():
 
             # Wraparound
             if obj.t.xcor() > 500:
-                obj._left(1000)
+                obj.left_(1000)
             elif obj.t.xcor() < -500:
-                obj._right(1000)
+                obj.right_(1000)
 
             # Bouncing off the top
             if obj.t.ycor() > 390:
@@ -126,4 +126,4 @@ try:
     main_game()
 
 except (Terminator, TclError):
-    pass;
+    pass
