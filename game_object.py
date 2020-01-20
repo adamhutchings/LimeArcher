@@ -35,10 +35,10 @@ class GameObject:
     def down_(self, amount):
         self.t.sety(self.t.ycor() - amount)
 
-    def _left(self, amount):
+    def left_(self, amount):
         self.t.setx(self.t.xcor() - amount)
 
-    def _right(self, amount):
+    def right_(self, amount):
         self.t.setx(self.t.xcor() + amount)
 
     # Actual player movements
@@ -46,10 +46,10 @@ class GameObject:
         self.vec.y = 4
 
     def left(self):
-        self._left(20)
+        self.left_(20)
 
     def right(self):
-        self._right(20)
+        self.right_(20)
 
     def down(self):
 
@@ -87,7 +87,7 @@ class GameObject:
     # For 'moving one tick'
     def tick(self):
         self.up_(self.vec.y)
-        self._right(self.vec.x)
+        self.right_(self.vec.x)
 
     def collided(self, other):
         if abs(self.t.xcor() - other.t.xcor()) > (self.w + other.w)*10:
