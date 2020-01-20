@@ -126,10 +126,14 @@ class Obstacle(GameObject):
 
 class Projectile(GameObject):
 
-    def __init__(self, parent):
+    def __init__(self, parent, x, y):
         super().__init__('circle', '#000000', 0.3, 0.3, parent.t.xcor(), parent.t.ycor())
 
         self.parent = parent
+
+        # Vector stuff
+        self.vec.x = x
+        self.vec.y = y
 
     def destroy(self):
         del self.t
